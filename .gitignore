@@ -30,6 +30,8 @@ jsconfig.json
 # Test reports
 tests/a11y-results
 tests/coverage
+tests/cypresss/screenshots
+tests/cypress/videos
 
 # built files
 /es

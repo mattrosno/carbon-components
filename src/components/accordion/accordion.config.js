@@ -1,58 +1,13 @@
 'use strict';
 
 const featureFlags = require('../../globals/js/feature-flags');
+const { flattenDemosObject } = require('../../globals/js/misc/flatten-demos');
 const { prefix } = require('../../globals/js/settings');
+const accordionConfig = require('@carbon/spec/components/accordion/accordion-config.js')(prefix);
 
 module.exports = {
   context: {
     featureFlags,
-    prefix,
   },
-  variants: [
-    {
-      name: 'default',
-      label: 'Accordion',
-      notes: 'Accordions allow users to expand and collapse sections of content.',
-      context: {
-        sections: [
-          {
-            title: 'Section 1 title',
-            paneId: 'pane1',
-          },
-          {
-            title: 'Section 2 title',
-            paneId: 'pane2',
-          },
-          {
-            title: 'Section 3 title',
-            paneId: 'pane3',
-          },
-          {
-            title: 'Section 4 title',
-            paneId: 'pane4',
-          },
-        ],
-      },
-    },
-    {
-      name: 'legacy',
-      label: 'Legacy',
-      context: {
-        sections: [
-          {
-            title: 'Section 1 title',
-          },
-          {
-            title: 'Section 2 title',
-          },
-          {
-            title: 'Section 3 title',
-          },
-          {
-            title: 'Section 4 title',
-          },
-        ],
-      },
-    },
-  ],
+  variants: flattenDemosObject(accordionConfig.demo),
 };

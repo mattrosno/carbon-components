@@ -1,9 +1,12 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import accordionConfig from '@carbon/spec/components/accordion/accordion-config';
 import settings from '../../globals/js/settings';
 import mixin from '../../globals/js/misc/mixin';
 import createComponent from '../../globals/js/mixins/create-component';
 import initComponentBySearch from '../../globals/js/mixins/init-component-by-search';
 import handles from '../../globals/js/mixins/handles';
 import eventMatches from '../../globals/js/misc/event-matches';
+import setClasses from '../../globals/js/misc/set-classes';
 import on from '../../globals/js/misc/on';
 
 class Accordion extends mixin(createComponent, initComponentBySearch, handles) {
@@ -16,11 +19,25 @@ class Accordion extends mixin(createComponent, initComponentBySearch, handles) {
    */
   constructor(element, options) {
     super(element, options);
+
+    this.config = accordionConfig(settings.prefix);
+
     this.manage(
       on(this.element, 'click', event => {
         const item = eventMatches(event, this.options.selectorAccordionItem);
         if (item && !eventMatches(event, this.options.selectorAccordionContent)) {
           this._toggle(item);
+        }
+      })
+    );
+
+    this.manage(
+      on(this.element, 'keydown', event => {
+        const header = eventMatches(event, this.options.selectorAccordionItemHeading);
+        if (header && (event.which === 13 || event.which === 32)) {
+          event.stopPropagation();
+          event.preventDefault();
+          this._toggle(event.target.parentNode);
         }
       })
     );
@@ -64,13 +81,18 @@ class Accordion extends mixin(createComponent, initComponentBySearch, handles) {
 
   _toggle(element) {
     const heading = element.querySelector(this.options.selectorAccordionItemHeading);
-    const expanded = heading.getAttribute('aria-expanded');
+    const expanded = heading.getAttribute('aria-expanded') === 'true';
+    const accordionItem = this.config.generateItem({
+      active: !expanded,
+    });
 
-    if (expanded !== null) {
-      heading.setAttribute('aria-expanded', expanded === 'true' ? 'false' : 'true');
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [key, value] of Object.entries(accordionItem.heading.attributes)) {
+      heading.setAttribute(key, value);
     }
 
-    element.classList.toggle(this.options.classActive);
+    // TODO find better way to enable class toggling when classes come from spec
+    element.className = setClasses(settings.prefix, element.className, accordionItem.classes.item);
   }
 
   /**
@@ -81,13 +103,15 @@ class Accordion extends mixin(createComponent, initComponentBySearch, handles) {
    * @property {string} selectorInit The CSS selector to find accordion UIs.
    */
   static get options() {
-    const { prefix } = settings;
+    // TODO avoid creating a new accordion from spec here
+    const config = accordionConfig(settings.prefix);
+    const accordion = config.generate();
+
     return {
       selectorInit: '[data-accordion]',
-      selectorAccordionItem: `.${prefix}--accordion__item`,
-      selectorAccordionItemHeading: `.${prefix}--accordion__heading`,
-      selectorAccordionContent: `.${prefix}--accordion__content`,
-      classActive: `${prefix}--accordion__item--active`,
+      selectorAccordionItem: `.${accordion.classes.item}`,
+      selectorAccordionItemHeading: `.${accordion.classes.heading}`,
+      selectorAccordionContent: `.${accordion.classes.content}`,
     };
   }
 

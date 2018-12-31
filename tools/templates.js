@@ -9,6 +9,8 @@ const expressHandlebars = require('express-handlebars');
 const helpers = require('handlebars-helpers');
 const Fractal = require('@frctl/fractal');
 const iconHelper = require('@carbon/icons-handlebars');
+const attrsHelper = require('../src/globals/handlebars/helpers/attrsHelper');
+const elementHelper = require('../src/globals/handlebars/helpers/elementHelper');
 
 const origResolveFilename = Module._resolveFilename;
 Module._resolveFilename = function resolveModule(request, parentModule, ...other) {
@@ -29,6 +31,8 @@ const handlebars = expressHandlebars.create({
 const Handlebars = handlebars.handlebars;
 helpers();
 iconHelper({ handlebars: Handlebars });
+attrsHelper({ handlebars: Handlebars });
+elementHelper({ handlebars: Handlebars });
 
 const readFile = promisify(fs.readFile);
 
