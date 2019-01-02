@@ -7,7 +7,6 @@ import AccordionTest from '@carbon/spec/components/accordion/accordion-test.js';
 const mountComponent = () => {
   const { prefix } = settings;
   const config = AccordionConfig(prefix);
-  const accordion = config.generate();
   const context = config.demo.variants.default.context;
 
   cy.readFile('src/components/accordion/accordion.hbs').then(template => {

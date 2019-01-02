@@ -91,7 +91,7 @@ class Accordion extends mixin(createComponent, initComponentBySearch, handles) {
       heading.setAttribute(key, value);
     }
 
-    // TODO find better way to enable class toggling when classes come from spec
+    // TODO SPEC find better way to enable class toggling when classes come from spec
     element.className = setClasses(settings.prefix, element.className, accordionItem.classes.item);
   }
 
@@ -103,7 +103,7 @@ class Accordion extends mixin(createComponent, initComponentBySearch, handles) {
    * @property {string} selectorInit The CSS selector to find accordion UIs.
    */
   static get options() {
-    // TODO avoid creating a new accordion from spec here
+    // TODO SPEC avoid creating a new accordion from spec here
     const config = accordionConfig(settings.prefix);
     const accordion = config.generate();
 
