@@ -1,13 +1,14 @@
+import get from 'lodash/get';
 import { mount } from '../..';
 import settings from '../../../../src/globals/js/settings';
 import Accordion from '../../../../src/components/accordion/accordion';
 import AccordionConfig from '@carbon/spec/components/accordion/accordion-config.js';
 import AccordionTest from '@carbon/spec/components/accordion/accordion-test.js';
 
-const mountComponent = () => {
+const mountComponent = demo => {
   const { prefix } = settings;
   const config = AccordionConfig(prefix);
-  const context = config.demo.variants.default.context;
+  const context = get(config.demo, demo, { context: {} }).context;
 
   cy.readFile('src/components/accordion/accordion.hbs').then(template => {
     mount(template, context).then(document => {
