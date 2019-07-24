@@ -168,6 +168,16 @@
   /// @group accordion
   $accordion-content-padding: 0 0 0 $carbon--spacing-05 !default !global;
 
+  /// @type Value
+  /// @access public
+  /// @group accordion
+  $accordion-heading-type-style: 'body-long-01' !default !global;
+
+  /// @type Value
+  /// @access public
+  /// @group accordion
+  $accordion-content-type-style: 'body-long-01' !default !global;
+
   // Checkbox
 
   /// @type Number
